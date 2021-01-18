@@ -44,7 +44,19 @@ class UserController
         return new Response('Saved new role with id'.$role->getId());
     }
 
-    public function attributeRole(EntityManagerInterface $entityManager ){
-
+    /**
+     * @Route ("/attributeRole/{id}", name="attributeRole")
+     * @param EntityManagerInterface $entityManager
+     * @param RoleRepository $roleRepository
+     * @return Response
+     */
+    public function attributeRole(EntityManagerInterface $entityManager, RoleRepository $roleRepository, int $id):Response{
+        $role = $roleRepository->find(1);
+        $user = new User();
+        $user->setId(1);
+        $user->setRole($role);
+        $entityManager->persist($user);
+        $entityManager->flush();
+        return new Response('Saved new role for the user '.$user->getId());
     }
 }
